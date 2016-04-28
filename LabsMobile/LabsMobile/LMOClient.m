@@ -9,7 +9,7 @@
 #import "LMOClient.h"
 #import "XMLDictionary.h"
 
-typedef void (^LMOResultBlock)(NSDictionary *response, NSError *error);
+typedef void (^LMOResultBlock)(id response, NSError *error);
 
 NSString * const LMOHTTPErrorDomain = @"com.labsmobile.error.http";
 
@@ -42,7 +42,9 @@ NSString * const LMOHTTPErrorDomain = @"com.labsmobile.error.http";
 - (void)sendSMS:(LMOSMSData *)smsData block:(LMOSMSResultBlock)block
 {
     NSDictionary *parameters = [smsData dictionary];
-    [self requestWithPath:@"get/send.php" parameters:parameters block:^(NSDictionary *response, NSError *error) {
+    NSString *xml = [parameters XMLString];
+    NSDictionary *body = @{@"XmlData": xml};
+    [self requestWithPath:@"clients/" parameters:nil post:YES body:body xmlResponse:YES block:^(id response, NSError *error) {
         if (response)
         {
             LMOSMSResponse *responseModel = [[LMOSMSResponse alloc] initWithDictionary:response];
@@ -57,7 +59,7 @@ NSString * const LMOHTTPErrorDomain = @"com.labsmobile.error.http";
 
 - (void)queryBalanceWithBlock:(LMOBalanceResultBlock)block
 {
-    [self requestWithPath:@"get/balance.php" parameters:nil block:^(NSDictionary *response, NSError *error) {
+    [self requestWithPath:@"balance.php" parameters:nil post:YES body:nil xmlResponse:YES block:^(id response, NSError *error) {
         if (response)
         {
             LMOBalanceResponse *responseModel = [[LMOBalanceResponse alloc] initWithDictionary:response];
@@ -75,7 +77,7 @@ NSString * const LMOHTTPErrorDomain = @"com.labsmobile.error.http";
     NSDictionary *parameters = @{@"countries": countries,
                                  @"format": @"XML"};
     
-    [self requestWithPath:@"get/prices.php" parameters:parameters block:^(NSDictionary *response, NSError *error) {
+    [self requestWithPath:@"prices.php" parameters:parameters post:YES body:nil xmlResponse:YES block:^(id response, NSError *error) {
         if (response)
         {
             LMOPricesResponse *responseModel = [[LMOPricesResponse alloc] initWithDictionary:response];
@@ -88,29 +90,119 @@ NSString * const LMOHTTPErrorDomain = @"com.labsmobile.error.http";
     }];
 }
 
-- (void)sendCodeWithBlock:(LMOBooleanResultBlock)block
+- (void)sendCodeForPhoneNumber:(NSString *)phoneNumber message:(NSString *)message sender:(NSString *)sender block:(LMOBooleanResultBlock)block
 {
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    parameters[@"phone_number"] = phoneNumber;
+    if (message)
+    {
+        parameters[@"message"] = message;
+    }
+    if (sender)
+    {
+        parameters[@"sender"] = sender;
+    }
+    
+    [self requestWithPath:@"otp/sendCode" parameters:parameters post:NO body:nil xmlResponse:NO block:^(id response, NSError *error) {
+        if (response)
+        {
+            if ([response isEqualToString:@"1"])
+            {
+                block(YES, nil);
+            }
+            else
+            {
+                block(NO, nil);
+            }
+        }
+        else
+        {
+            block(NO, error);
+        }
+    }];
 }
 
-- (void)resendCodeWithBlock:(LMOBooleanResultBlock)block
+- (void)resendCodeForPhoneNumber:(NSString *)phoneNumber message:(NSString *)message sender:(NSString *)sender block:(LMOBooleanResultBlock)block
 {
+    NSDictionary *parameters = @{@"phone_number": phoneNumber,
+                                 @"message": message,
+                                 @"sender": sender};
+    
+    [self requestWithPath:@"otp/resendCode" parameters:parameters post:NO body:nil xmlResponse:NO block:^(id response, NSError *error) {
+        if (response)
+        {
+            if ([response isEqualToString:@"1"])
+            {
+                block(YES, nil);
+            }
+            else
+            {
+                block(NO, nil);
+            }
+        }
+        else
+        {
+            block(NO, error);
+        }
+    }];
 }
 
-- (void)validateCodeWithBlock:(LMOBooleanResultBlock)block
+- (void)validateCode:(NSString *)code forPhoneNumber:(NSString *)phoneNumber block:(LMOBooleanResultBlock)block
 {
+    NSDictionary *parameters = @{@"phone_number": phoneNumber,
+                                 @"code": code};
+    
+    [self requestWithPath:@"otp/validateCode" parameters:parameters post:NO body:nil xmlResponse:NO block:^(id response, NSError *error) {
+        if (response)
+        {
+            if ([response isEqualToString:@"1"])
+            {
+                block(YES, nil);
+            }
+            else
+            {
+                block(NO, nil);
+            }
+        }
+        else
+        {
+            block(NO, error);
+        }
+    }];
 }
 
-- (void)checkCodeWithBlock:(LMOBooleanResultBlock)block
+- (void)checkCodeForPhoneNumber:(NSString *)phoneNumber block:(LMOCodeStatusResultBlock)block
 {
+    NSDictionary *parameters = @{@"phone_number": phoneNumber};
+    
+    [self requestWithPath:@"otp/checkCode" parameters:parameters post:NO body:nil xmlResponse:NO block:^(id response, NSError *error) {
+        if (response)
+        {
+            if ([response isEqualToString:@"1"])
+            {
+                block(LMOCodeStatusValid, nil);
+            }
+            else if ([response isEqualToString:@"0"])
+            {
+                block(LMOCodeStatusPending, nil);
+            }
+            else
+            {
+                block(LMOCodeStatusUnknown, nil);
+            }
+        }
+        else
+        {
+            block(LMOCodeStatusUnknown, error);
+        }
+    }];
 }
 
 
 
-- (void)requestWithPath:(NSString *)path parameters:(NSDictionary *)parameters block:(LMOResultBlock)block;
+- (void)requestWithPath:(NSString *)path parameters:(NSDictionary *)parameters post:(BOOL)post body:(NSDictionary *)body xmlResponse:(BOOL)xmlResponse block:(LMOResultBlock)block;
 {
     NSMutableDictionary *finalParameters = [NSMutableDictionary dictionaryWithDictionary:parameters];
-    finalParameters[@"username"] = self.username;
-    finalParameters[@"password"] = self.password;
     if (self.environment)
     {
         finalParameters[@"env"] = self.environment;
@@ -119,9 +211,21 @@ NSString * const LMOHTTPErrorDomain = @"com.labsmobile.error.http";
     NSString *query = [self stringWithParameters:finalParameters];
     path = [NSString stringWithFormat:@"%@?%@", path, query];
     
-    NSLog(@"request: %@", path);
+    NSString *auth = [NSString stringWithFormat:@"%@:%@", self.username, self.password];
+    NSData *authData = [auth dataUsingEncoding:NSUTF8StringEncoding];
+    NSString *encodedAuth = [authData base64EncodedStringWithOptions:0];
     
-    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:path relativeToURL:self.baseURL]];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:path relativeToURL:self.baseURL]];
+    [request addValue:[NSString stringWithFormat:@"Basic %@", encodedAuth] forHTTPHeaderField:@"Authorization"];
+    if (post)
+    {
+        request.HTTPMethod = @"POST";
+        if (body)
+        {
+            NSString *encodedBody = [self stringWithParameters:body];
+            request.HTTPBody = [encodedBody dataUsingEncoding:NSUTF8StringEncoding];
+        }
+    }
     
     NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         if (error)
@@ -133,15 +237,20 @@ NSString * const LMOHTTPErrorDomain = @"com.labsmobile.error.http";
         else
         {
             NSInteger statusCode = ((NSHTTPURLResponse *)response).statusCode;
-            NSLog(@"status: %ld", (long)statusCode);
             if (statusCode >= 200 && statusCode <= 299)
             {
-                NSString *xmlString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-                NSLog(@"response: %@", xmlString);
+                id decodedResponse;
+                if (xmlResponse)
+                {
+                    decodedResponse = [NSDictionary dictionaryWithXMLData:data];
+                }
+                else
+                {
+                    decodedResponse = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                }
                 
-                NSDictionary *xmlData = [NSDictionary dictionaryWithXMLData:data];
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    block(xmlData, nil);
+                    block(decodedResponse, nil);
                 });
             }
             else

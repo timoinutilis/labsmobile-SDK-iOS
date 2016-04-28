@@ -12,10 +12,17 @@
 #import <LabsMobile/LMOBalanceResponse.h>
 #import <LabsMobile/LMOPricesResponse.h>
 
+typedef NS_ENUM(NSInteger, LMOCodeStatus) {
+    LMOCodeStatusUnknown,
+    LMOCodeStatusPending,
+    LMOCodeStatusValid
+};
+
 typedef void (^LMOBooleanResultBlock)(BOOL succeeded, NSError *error);
 typedef void (^LMOSMSResultBlock)(LMOSMSResponse *response, NSError *error);
 typedef void (^LMOBalanceResultBlock)(LMOBalanceResponse *response, NSError *error);
 typedef void (^LMOPricesResultBlock)(LMOPricesResponse *response, NSError *error);
+typedef void (^LMOCodeStatusResultBlock)(LMOCodeStatus status, NSError *error);
 
 extern NSString * const LMOHTTPErrorDomain;
 
@@ -47,15 +54,15 @@ extern NSString * const LMOHTTPErrorDomain;
 
 
 /* Request a verification code to be send via SMS to a mobile number. */
-- (void)sendCodeWithBlock:(LMOBooleanResultBlock)block;
+- (void)sendCodeForPhoneNumber:(NSString *)phoneNumber message:(NSString *)message sender:(NSString *)sender block:(LMOBooleanResultBlock)block;
 
 /* Request the verification code to be re-sent to a mobile number. */
-- (void)resendCodeWithBlock:(LMOBooleanResultBlock)block;
+- (void)resendCodeForPhoneNumber:(NSString *)phoneNumber message:(NSString *)message sender:(NSString *)sender block:(LMOBooleanResultBlock)block;
 
 /* Verify a mobile number by sending the code that has been received. */
-- (void)validateCodeWithBlock:(LMOBooleanResultBlock)block;
+- (void)validateCode:(NSString *)code forPhoneNumber:(NSString *)phoneNumber block:(LMOBooleanResultBlock)block;
 
 /* Check whether a mobile number is verified. */
-- (void)checkCodeWithBlock:(LMOBooleanResultBlock)block;
+- (void)checkCodeForPhoneNumber:(NSString *)phoneNumber block:(LMOCodeStatusResultBlock)block;
 
 @end

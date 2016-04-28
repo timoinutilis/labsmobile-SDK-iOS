@@ -12,9 +12,9 @@
 
 - (NSDictionary *)dictionary;
 
-@property NSString *msisdn;
+@property NSArray <NSString *> *recipients;
 @property NSString *message;
-@property NSString *sender;
+@property NSString *tpoa;
 @property NSString *subId;
 @property NSString *label;
 @property BOOL test;

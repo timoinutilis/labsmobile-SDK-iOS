@@ -7,6 +7,7 @@
 //
 
 #import "LMOSMSData.h"
+#import "XMLDictionary.h"
 
 @implementation LMOSMSData
 
@@ -16,11 +17,25 @@
     dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
     
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-    dict[@"msisdn"] = self.msisdn;
-    dict[@"message"] = self.message;
-    if (self.sender)
+    dict[XMLDictionaryNodeNameKey] = @"sms";
+    
+    if (self.recipients)
     {
-        dict[@"sender"] = self.sender;
+        NSMutableArray *recipients = [NSMutableArray array];
+        for (NSString *recipient in self.recipients)
+        {
+            [recipients addObject:@{@"msisdn": recipient}];
+        }
+        dict[@"recipient"] = recipients;
+    }
+    
+    if (self.message)
+    {
+        dict[@"message"] = self.message;
+    }
+    if (self.tpoa)
+    {
+        dict[@"tpoa"] = self.tpoa;
     }
     if (self.subId)
     {
