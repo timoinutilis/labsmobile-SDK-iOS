@@ -67,7 +67,7 @@
 
 - (IBAction)onQueryPricesTapped:(id)sender
 {
-    [self.client queryPricesWithCountries:@"DE,ES,FR" block:^(LMOPricesResponse *response, NSError *error) {
+    [self.client queryPricesWithCountries:@"DE,FR" block:^(LMOPricesResponse *response, NSError *error) {
         if (response)
         {
             NSLog(@"prices");
@@ -109,13 +109,17 @@
 - (IBAction)onOTPValidateTapped:(id)sender
 {
     [self.client validateCode:self.codeTextField.text forPhoneNumber:self.phoneNumberTextField.text block:^(BOOL succeeded, NSError *error) {
-        if (succeeded)
+        if (error)
         {
-            NSLog(@"succeeded");
+            NSLog(@"error %@", error.localizedDescription);
+        }
+        else if (succeeded)
+        {
+            NSLog(@"valid");
         }
         else
         {
-            NSLog(@"error %@", error.localizedDescription);
+            NSLog(@"invalid");
         }
     }];
 }

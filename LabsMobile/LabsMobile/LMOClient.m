@@ -44,7 +44,7 @@ NSString * const LMOHTTPErrorDomain = @"com.labsmobile.error.http";
     NSDictionary *parameters = [smsData dictionary];
     NSString *xml = [parameters XMLString];
     NSDictionary *body = @{@"XmlData": xml};
-    [self requestWithPath:@"clients/" parameters:nil post:YES body:body xmlResponse:YES block:^(id response, NSError *error) {
+    [self requestWithPath:@"clients/" parameters:nil post:YES basicAuth:YES body:body xmlResponse:YES block:^(id response, NSError *error) {
         if (response)
         {
             LMOSMSResponse *responseModel = [[LMOSMSResponse alloc] initWithDictionary:response];
@@ -59,7 +59,7 @@ NSString * const LMOHTTPErrorDomain = @"com.labsmobile.error.http";
 
 - (void)queryBalanceWithBlock:(LMOBalanceResultBlock)block
 {
-    [self requestWithPath:@"balance.php" parameters:nil post:YES body:nil xmlResponse:YES block:^(id response, NSError *error) {
+    [self requestWithPath:@"get/balance.php" parameters:nil post:NO basicAuth:NO body:nil xmlResponse:YES block:^(id response, NSError *error) {
         if (response)
         {
             LMOBalanceResponse *responseModel = [[LMOBalanceResponse alloc] initWithDictionary:response];
@@ -74,10 +74,14 @@ NSString * const LMOHTTPErrorDomain = @"com.labsmobile.error.http";
 
 - (void)queryPricesWithCountries:(NSString *)countries block:(LMOPricesResultBlock)block
 {
-    NSDictionary *parameters = @{@"countries": countries,
-                                 @"format": @"XML"};
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    parameters[@"format"] = @"XML";
+    if (countries)
+    {
+        parameters[@"countries"] = countries;
+    }
     
-    [self requestWithPath:@"prices.php" parameters:parameters post:YES body:nil xmlResponse:YES block:^(id response, NSError *error) {
+    [self requestWithPath:@"get/prices.php" parameters:parameters post:NO basicAuth:NO body:nil xmlResponse:YES block:^(id response, NSError *error) {
         if (response)
         {
             LMOPricesResponse *responseModel = [[LMOPricesResponse alloc] initWithDictionary:response];
@@ -103,7 +107,7 @@ NSString * const LMOHTTPErrorDomain = @"com.labsmobile.error.http";
         parameters[@"sender"] = sender;
     }
     
-    [self requestWithPath:@"otp/sendCode" parameters:parameters post:NO body:nil xmlResponse:NO block:^(id response, NSError *error) {
+    [self requestWithPath:@"otp/sendCode" parameters:parameters post:NO basicAuth:YES body:nil xmlResponse:NO block:^(id response, NSError *error) {
         if (response)
         {
             if ([response isEqualToString:@"1"])
@@ -124,11 +128,18 @@ NSString * const LMOHTTPErrorDomain = @"com.labsmobile.error.http";
 
 - (void)resendCodeForPhoneNumber:(NSString *)phoneNumber message:(NSString *)message sender:(NSString *)sender block:(LMOBooleanResultBlock)block
 {
-    NSDictionary *parameters = @{@"phone_number": phoneNumber,
-                                 @"message": message,
-                                 @"sender": sender};
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    parameters[@"phone_number"] = phoneNumber;
+    if (message)
+    {
+        parameters[@"message"] = message;
+    }
+    if (sender)
+    {
+        parameters[@"sender"] = sender;
+    }
     
-    [self requestWithPath:@"otp/resendCode" parameters:parameters post:NO body:nil xmlResponse:NO block:^(id response, NSError *error) {
+    [self requestWithPath:@"otp/resendCode" parameters:parameters post:NO basicAuth:YES body:nil xmlResponse:NO block:^(id response, NSError *error) {
         if (response)
         {
             if ([response isEqualToString:@"1"])
@@ -152,7 +163,7 @@ NSString * const LMOHTTPErrorDomain = @"com.labsmobile.error.http";
     NSDictionary *parameters = @{@"phone_number": phoneNumber,
                                  @"code": code};
     
-    [self requestWithPath:@"otp/validateCode" parameters:parameters post:NO body:nil xmlResponse:NO block:^(id response, NSError *error) {
+    [self requestWithPath:@"otp/validateCode" parameters:parameters post:NO basicAuth:YES body:nil xmlResponse:NO block:^(id response, NSError *error) {
         if (response)
         {
             if ([response isEqualToString:@"1"])
@@ -175,7 +186,7 @@ NSString * const LMOHTTPErrorDomain = @"com.labsmobile.error.http";
 {
     NSDictionary *parameters = @{@"phone_number": phoneNumber};
     
-    [self requestWithPath:@"otp/checkCode" parameters:parameters post:NO body:nil xmlResponse:NO block:^(id response, NSError *error) {
+    [self requestWithPath:@"otp/checkCode" parameters:parameters post:NO basicAuth:YES body:nil xmlResponse:NO block:^(id response, NSError *error) {
         if (response)
         {
             if ([response isEqualToString:@"1"])
@@ -200,9 +211,14 @@ NSString * const LMOHTTPErrorDomain = @"com.labsmobile.error.http";
 
 
 
-- (void)requestWithPath:(NSString *)path parameters:(NSDictionary *)parameters post:(BOOL)post body:(NSDictionary *)body xmlResponse:(BOOL)xmlResponse block:(LMOResultBlock)block;
+- (void)requestWithPath:(NSString *)path parameters:(NSDictionary *)parameters post:(BOOL)post basicAuth:(BOOL)basicAuth body:(NSDictionary *)body xmlResponse:(BOOL)xmlResponse block:(LMOResultBlock)block;
 {
     NSMutableDictionary *finalParameters = [NSMutableDictionary dictionaryWithDictionary:parameters];
+    if (!basicAuth)
+    {
+        finalParameters[@"username"] = self.username;
+        finalParameters[@"password"] = self.password;
+    }
     if (self.environment)
     {
         finalParameters[@"env"] = self.environment;
@@ -211,12 +227,16 @@ NSString * const LMOHTTPErrorDomain = @"com.labsmobile.error.http";
     NSString *query = [self stringWithParameters:finalParameters];
     path = [NSString stringWithFormat:@"%@?%@", path, query];
     
-    NSString *auth = [NSString stringWithFormat:@"%@:%@", self.username, self.password];
-    NSData *authData = [auth dataUsingEncoding:NSUTF8StringEncoding];
-    NSString *encodedAuth = [authData base64EncodedStringWithOptions:0];
-    
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:path relativeToURL:self.baseURL]];
-    [request addValue:[NSString stringWithFormat:@"Basic %@", encodedAuth] forHTTPHeaderField:@"Authorization"];
+    
+    if (basicAuth)
+    {
+        NSString *auth = [NSString stringWithFormat:@"%@:%@", self.username, self.password];
+        NSData *authData = [auth dataUsingEncoding:NSUTF8StringEncoding];
+        NSString *encodedAuth = [authData base64EncodedStringWithOptions:0];
+        [request addValue:[NSString stringWithFormat:@"Basic %@", encodedAuth] forHTTPHeaderField:@"Authorization"];
+    }
+
     if (post)
     {
         request.HTTPMethod = @"POST";
