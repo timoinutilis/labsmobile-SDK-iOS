@@ -7,6 +7,8 @@
 //
 
 #import "BalanceViewController.h"
+#import <LabsMobile/LabsMobile.h>
+#import "AppDelegate.h"
 
 @interface BalanceViewController ()
 
@@ -19,6 +21,21 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    LMOClient *labsMobileClient = ((AppDelegate *)[UIApplication sharedApplication].delegate).labsMobileClient;
+    
+    [labsMobileClient queryBalanceWithBlock:^(LMOBalanceResponse *response, NSError *error) {
+        if (error)
+        {
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Could Not Query Balance" message:error.localizedDescription preferredStyle:UIAlertControllerStyleAlert];
+            [alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+            [self presentViewController:alert animated:YES completion:nil];
+        }
+        else
+        {
+            self.numberLabel.text = @(response.messages).stringValue;
+        }
+    }];
 }
 
 @end

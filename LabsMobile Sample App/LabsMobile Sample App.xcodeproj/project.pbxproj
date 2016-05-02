@@ -18,7 +18,26 @@
 		92825A4F1CD3D0D500CC2BF3 /* PricesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92825A4E1CD3D0D500CC2BF3 /* PricesTableViewController.m */; };
 		92825A521CD3D11A00CC2BF3 /* PricesResultsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92825A511CD3D11A00CC2BF3 /* PricesResultsTableViewController.m */; };
 		92825A551CD3D18100CC2BF3 /* OTPTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92825A541CD3D18100CC2BF3 /* OTPTableViewController.m */; };
+		92B9B27B1CD77D6E002BD162 /* LabsMobile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92B9B2781CD77D23002BD162 /* LabsMobile.framework */; };
+		92B9B27E1CD7A8E6002BD162 /* AccountTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 92B9B27D1CD7A8E6002BD162 /* AccountTableViewController.m */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		92B9B2771CD77D23002BD162 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 92B9B2731CD77D23002BD162 /* LabsMobile.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 92C587DD1CCF5F7200D2FE0E;
+			remoteInfo = LabsMobile;
+		};
+		92B9B2791CD77D68002BD162 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 92B9B2731CD77D23002BD162 /* LabsMobile.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 92C587DC1CCF5F7200D2FE0E;
+			remoteInfo = LabsMobile;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		92825A221CD39C0800CC2BF3 /* LabsMobile Sample App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "LabsMobile Sample App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -41,6 +60,9 @@
 		92825A511CD3D11A00CC2BF3 /* PricesResultsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PricesResultsTableViewController.m; sourceTree = "<group>"; };
 		92825A531CD3D18100CC2BF3 /* OTPTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OTPTableViewController.h; sourceTree = "<group>"; };
 		92825A541CD3D18100CC2BF3 /* OTPTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OTPTableViewController.m; sourceTree = "<group>"; };
+		92B9B2731CD77D23002BD162 /* LabsMobile.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LabsMobile.xcodeproj; path = ../../LabsMobile/LabsMobile.xcodeproj; sourceTree = "<group>"; };
+		92B9B27C1CD7A8E6002BD162 /* AccountTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountTableViewController.h; sourceTree = "<group>"; };
+		92B9B27D1CD7A8E6002BD162 /* AccountTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountTableViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -48,6 +70,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				92B9B27B1CD77D6E002BD162 /* LabsMobile.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -73,12 +96,15 @@
 		92825A241CD39C0800CC2BF3 /* LabsMobile Sample App */ = {
 			isa = PBXGroup;
 			children = (
+				92B9B2731CD77D23002BD162 /* LabsMobile.xcodeproj */,
 				92825A311CD39C0800CC2BF3 /* Assets.xcassets */,
 				92825A331CD39C0800CC2BF3 /* LaunchScreen.storyboard */,
 				92825A361CD39C0800CC2BF3 /* Info.plist */,
 				92825A281CD39C0800CC2BF3 /* AppDelegate.h */,
 				92825A291CD39C0800CC2BF3 /* AppDelegate.m */,
 				92825A2E1CD39C0800CC2BF3 /* Main.storyboard */,
+				92B9B27C1CD7A8E6002BD162 /* AccountTableViewController.h */,
+				92B9B27D1CD7A8E6002BD162 /* AccountTableViewController.m */,
 				92825A3E1CD39D1F00CC2BF3 /* MainTableViewController.h */,
 				92825A3F1CD39D1F00CC2BF3 /* MainTableViewController.m */,
 				92825A451CD3C23500CC2BF3 /* SendSMSTableViewController.h */,
@@ -104,6 +130,14 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		92B9B2741CD77D23002BD162 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				92B9B2781CD77D23002BD162 /* LabsMobile.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -118,6 +152,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				92B9B27A1CD77D68002BD162 /* PBXTargetDependency */,
 			);
 			name = "LabsMobile Sample App";
 			productName = "LabsMobile Sample App";
@@ -149,12 +184,28 @@
 			mainGroup = 92825A191CD39C0800CC2BF3;
 			productRefGroup = 92825A231CD39C0800CC2BF3 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 92B9B2741CD77D23002BD162 /* Products */;
+					ProjectRef = 92B9B2731CD77D23002BD162 /* LabsMobile.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				92825A211CD39C0800CC2BF3 /* LabsMobile Sample App */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		92B9B2781CD77D23002BD162 /* LabsMobile.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = LabsMobile.framework;
+			remoteRef = 92B9B2771CD77D23002BD162 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		92825A201CD39C0800CC2BF3 /* Resources */ = {
@@ -177,6 +228,7 @@
 				92825A2A1CD39C0800CC2BF3 /* AppDelegate.m in Sources */,
 				92825A4C1CD3CAA600CC2BF3 /* BalanceViewController.m in Sources */,
 				92825A271CD39C0800CC2BF3 /* main.m in Sources */,
+				92B9B27E1CD7A8E6002BD162 /* AccountTableViewController.m in Sources */,
 				92825A521CD3D11A00CC2BF3 /* PricesResultsTableViewController.m in Sources */,
 				92825A4F1CD3D0D500CC2BF3 /* PricesTableViewController.m in Sources */,
 				92825A551CD3D18100CC2BF3 /* OTPTableViewController.m in Sources */,
@@ -186,6 +238,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		92B9B27A1CD77D68002BD162 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = LabsMobile;
+			targetProxy = 92B9B2791CD77D68002BD162 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		92825A2E1CD39C0800CC2BF3 /* Main.storyboard */ = {

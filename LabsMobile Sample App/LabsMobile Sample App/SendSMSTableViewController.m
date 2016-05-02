@@ -7,7 +7,7 @@
 //
 
 #import "SendSMSTableViewController.h"
-//#import <LabsMobile/LabsMobile.h>
+#import <LabsMobile/LabsMobile.h>
 #import "AppDelegate.h"
 
 @interface SendSMSTableViewController ()
@@ -15,7 +15,6 @@
 @property (weak, nonatomic) IBOutlet UITextField *phoneNumberTextField;
 @property (weak, nonatomic) IBOutlet UITextField *messageTextField;
 
-//@property LMOClient *labsMobileClient;
 @property BOOL optionTest;
 @property BOOL optionUnicode;
 @property BOOL optionLong;
@@ -27,8 +26,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-//    self.labsMobileClient = ((AppDelegate *)[UIApplication sharedApplication].delegate).labsMobileClient;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -56,7 +53,6 @@
     }
     else if (indexPath.section == 3)
     {
-        /*
         LMOSMSData *smsData = [[LMOSMSData alloc] init];
         smsData.recipients = @[self.phoneNumberTextField.text];
         smsData.message = self.messageTextField.text;
@@ -64,7 +60,9 @@
         smsData.ucs2 = self.optionUnicode;
         smsData.longMessage = self.optionLong;
         
-        [self.labsMobileClient sendSMS:smsData block:^(LMOSMSResponse *response, NSError *error) {
+        LMOClient *labsMobileClient = ((AppDelegate *)[UIApplication sharedApplication].delegate).labsMobileClient;
+        
+        [labsMobileClient sendSMS:smsData block:^(LMOSMSResponse *response, NSError *error) {
             if (error)
             {
                 UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Could Not Send Message" message:error.localizedDescription preferredStyle:UIAlertControllerStyleAlert];
@@ -78,7 +76,6 @@
                 [self presentViewController:alert animated:YES completion:nil];
             }
         }];
-         */
     }
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];

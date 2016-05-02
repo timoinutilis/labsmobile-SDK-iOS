@@ -18,8 +18,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-//    ((AppDelegate *)[UIApplication sharedApplication].delegate).labsMobileClient = [[LMOClient alloc] initWithUsername:@"hello@timokloss.com" password:@"12345678"];
 }
 
 /*

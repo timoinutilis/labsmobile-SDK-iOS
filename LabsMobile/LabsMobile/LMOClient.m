@@ -16,6 +16,7 @@ NSString * const LMOHTTPErrorDomain = @"com.labsmobile.error.http";
 @interface LMOClient()
 @property NSURLSession *session;
 @property NSURL *baseURL;
+@property XMLDictionaryParser *xmlDictionaryParser;
 @end
 
 @implementation LMOClient
@@ -35,6 +36,7 @@ NSString * const LMOHTTPErrorDomain = @"com.labsmobile.error.http";
         
         _session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
         _baseURL = [NSURL URLWithString:@"https://api.labsmobile.com/"];
+        _xmlDictionaryParser = [[XMLDictionaryParser alloc] init];
     }
     return self;
 }
@@ -262,7 +264,7 @@ NSString * const LMOHTTPErrorDomain = @"com.labsmobile.error.http";
                 id decodedResponse;
                 if (xmlResponse)
                 {
-                    decodedResponse = [NSDictionary dictionaryWithXMLData:data];
+                    decodedResponse = [self.xmlDictionaryParser dictionaryWithData:data];
                 }
                 else
                 {

@@ -10,4 +10,6 @@
 
 @interface PricesResultsTableViewController : UITableViewController
 
+@property NSString *countries;
+
 @end

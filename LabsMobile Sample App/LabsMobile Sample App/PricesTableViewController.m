@@ -29,7 +29,10 @@
     if ([segue.identifier isEqualToString:@"Query"])
     {
         PricesResultsTableViewController *vc = segue.destinationViewController;
-        //TODO
+        if (self.countriesTextField.text.length > 0)
+        {
+            vc.countries = self.countriesTextField.text;
+        }
     }
 }
 

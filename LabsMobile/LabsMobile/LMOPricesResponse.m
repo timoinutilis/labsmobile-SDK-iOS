@@ -32,10 +32,17 @@
     if (self = [super init])
     {
         NSMutableArray *countryPrices = [NSMutableArray array];
-        NSArray *countries = dictionary[@"country"];
-        for (NSDictionary *country in countries)
+        id countries = dictionary[@"country"];
+        if ([countries isKindOfClass:[NSArray class]])
         {
-            [countryPrices addObject:[[LMOCountryPrice alloc] initWithDictionary:country]];
+            for (NSDictionary *country in countries)
+            {
+                [countryPrices addObject:[[LMOCountryPrice alloc] initWithDictionary:country]];
+            }
+        }
+        else
+        {
+            [countryPrices addObject:[[LMOCountryPrice alloc] initWithDictionary:countries]];
         }
         _countryPrices = countryPrices;
     }

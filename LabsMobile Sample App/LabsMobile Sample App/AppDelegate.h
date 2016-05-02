@@ -7,12 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-//#import <LabsMobile/LabsMobile.h>
+#import <LabsMobile/LabsMobile.h>
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-//@property LMOClient *labsMobileClient;
+@property LMOClient *labsMobileClient;
 
 
 @end
