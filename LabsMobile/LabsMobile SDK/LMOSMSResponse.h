@@ -8,12 +8,34 @@
 
 #import <Foundation/Foundation.h>
 
+/**
+ LMOSMSResponse represents a response from the sendSMS service.
+ */
 @interface LMOSMSResponse : NSObject
 
+/**
+ Internal initializer. Objects of this class are created by LMOClient.
+ */
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary;
 
+/**
+ The custom response code that the server has responded.
+ */
 @property (readonly) NSInteger code;
+
+/**
+ The accompanying message received in the response.
+ */
 @property (readonly) NSString *message;
+
+/**
+ The subId.
+ */
 @property (readonly) NSString *subId;
+
+/**
+ Utility method that checks whether the SMS was sent successfully.
+ */
+@property (readonly, nonatomic) BOOL success;
 
 @end

@@ -8,10 +8,19 @@
 
 #import <Foundation/Foundation.h>
 
+/**
+ LMOBalanceResponse represents a response from the queryBalance service.
+ */
 @interface LMOBalanceResponse : NSObject
 
+/**
+ Internal initializer. Objects of this class are created by LMOClient.
+ */
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary;
 
+/**
+ The credit of the account.
+ */
 @property NSInteger messages;
 
 @end

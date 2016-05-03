@@ -21,6 +21,8 @@ NSString * const LMOHTTPErrorDomain = @"com.labsmobile.error.http";
 
 @implementation LMOClient
 
+/**************** Initialize ****************/
+
 - (instancetype)initWithUsername:(NSString *)username password:(NSString *)password
 {
     return [self initWithUsername:username password:password environment:nil];
@@ -30,6 +32,9 @@ NSString * const LMOHTTPErrorDomain = @"com.labsmobile.error.http";
 {
     if (self = [super init])
     {
+        NSParameterAssert(username);
+        NSParameterAssert(password);
+        
         _username = username;
         _password = password;
         _environment = environment;
@@ -41,8 +46,13 @@ NSString * const LMOHTTPErrorDomain = @"com.labsmobile.error.http";
     return self;
 }
 
+/**************** SMS Service ****************/
+
 - (void)sendSMS:(LMOSMSData *)smsData block:(LMOSMSResultBlock)block
 {
+    NSParameterAssert(smsData);
+    NSParameterAssert(block);
+    
     NSDictionary *parameters = [smsData dictionary];
     NSString *xml = [parameters XMLString];
     NSDictionary *body = @{@"XmlData": xml};
@@ -59,8 +69,12 @@ NSString * const LMOHTTPErrorDomain = @"com.labsmobile.error.http";
     }];
 }
 
+/**************** Query Services ****************/
+
 - (void)queryBalanceWithBlock:(LMOBalanceResultBlock)block
 {
+    NSParameterAssert(block);
+    
     [self requestWithPath:@"get/balance.php" parameters:nil post:NO basicAuth:NO body:nil xmlResponse:YES block:^(id response, NSError *error) {
         if (response)
         {
@@ -76,6 +90,8 @@ NSString * const LMOHTTPErrorDomain = @"com.labsmobile.error.http";
 
 - (void)queryPricesWithCountries:(NSString *)countries block:(LMOPricesResultBlock)block
 {
+    NSParameterAssert(block);
+    
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     parameters[@"format"] = @"XML";
     if (countries)
@@ -96,8 +112,13 @@ NSString * const LMOHTTPErrorDomain = @"com.labsmobile.error.http";
     }];
 }
 
+/**************** OTP Services ****************/
+
 - (void)sendCodeForPhoneNumber:(NSString *)phoneNumber message:(NSString *)message sender:(NSString *)sender block:(LMOBooleanResultBlock)block
 {
+    NSParameterAssert(phoneNumber);
+    NSParameterAssert(block);
+    
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     parameters[@"phone_number"] = phoneNumber;
     if (message)
@@ -130,6 +151,9 @@ NSString * const LMOHTTPErrorDomain = @"com.labsmobile.error.http";
 
 - (void)resendCodeForPhoneNumber:(NSString *)phoneNumber message:(NSString *)message sender:(NSString *)sender block:(LMOBooleanResultBlock)block
 {
+    NSParameterAssert(phoneNumber);
+    NSParameterAssert(block);
+    
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     parameters[@"phone_number"] = phoneNumber;
     if (message)
@@ -162,6 +186,10 @@ NSString * const LMOHTTPErrorDomain = @"com.labsmobile.error.http";
 
 - (void)validateCode:(NSString *)code forPhoneNumber:(NSString *)phoneNumber block:(LMOBooleanResultBlock)block
 {
+    NSParameterAssert(code);
+    NSParameterAssert(phoneNumber);
+    NSParameterAssert(block);
+    
     NSDictionary *parameters = @{@"phone_number": phoneNumber,
                                  @"code": code};
     
@@ -186,6 +214,9 @@ NSString * const LMOHTTPErrorDomain = @"com.labsmobile.error.http";
 
 - (void)checkCodeForPhoneNumber:(NSString *)phoneNumber block:(LMOCodeStatusResultBlock)block
 {
+    NSParameterAssert(phoneNumber);
+    NSParameterAssert(block);
+    
     NSDictionary *parameters = @{@"phone_number": phoneNumber};
     
     [self requestWithPath:@"otp/checkCode" parameters:parameters post:NO basicAuth:YES body:nil xmlResponse:NO block:^(id response, NSError *error) {
@@ -211,21 +242,36 @@ NSString * const LMOHTTPErrorDomain = @"com.labsmobile.error.http";
     }];
 }
 
+/**************** Private Methods ****************/
 
-
+/**
+ Make an HTTP request for the LabsMobile API.
+ 
+ @param path The service path relative to the LabsMobile base URL.
+ @param parameters A dictionary with query parameters.
+ @param post YES for a POST request, NO for GET.
+ @param basicAuth YES for HTTP basic auth, NO for URL parameter auth.
+ @param body Data for the HTTP body (for POST requests). Dictionary will be encoded like URL parameters.
+ @param xmlResponse YES if the expected server response is in XML format, NO for plain text.
+ @param block The block to execute when the service responses. It's called in the main thread.
+ 
+ */
 - (void)requestWithPath:(NSString *)path parameters:(NSDictionary *)parameters post:(BOOL)post basicAuth:(BOOL)basicAuth body:(NSDictionary *)body xmlResponse:(BOOL)xmlResponse block:(LMOResultBlock)block;
 {
     NSMutableDictionary *finalParameters = [NSMutableDictionary dictionaryWithDictionary:parameters];
     if (!basicAuth)
     {
+        // URL auth
         finalParameters[@"username"] = self.username;
         finalParameters[@"password"] = self.password;
     }
     if (self.environment)
     {
+        // optional environment
         finalParameters[@"env"] = self.environment;
     }
     
+    // add query parameters to path
     NSString *query = [self stringWithParameters:finalParameters];
     path = [NSString stringWithFormat:@"%@?%@", path, query];
     
@@ -233,6 +279,7 @@ NSString * const LMOHTTPErrorDomain = @"com.labsmobile.error.http";
     
     if (basicAuth)
     {
+        // HTTP headers for basic auth
         NSString *auth = [NSString stringWithFormat:@"%@:%@", self.username, self.password];
         NSData *authData = [auth dataUsingEncoding:NSUTF8StringEncoding];
         NSString *encodedAuth = [authData base64EncodedStringWithOptions:0];
@@ -244,6 +291,7 @@ NSString * const LMOHTTPErrorDomain = @"com.labsmobile.error.http";
         request.HTTPMethod = @"POST";
         if (body)
         {
+            // optional HTTP body
             NSString *encodedBody = [self stringWithParameters:body];
             request.HTTPBody = [encodedBody dataUsingEncoding:NSUTF8StringEncoding];
         }
@@ -252,6 +300,7 @@ NSString * const LMOHTTPErrorDomain = @"com.labsmobile.error.http";
     NSURLSessionDataTask *task = [self.session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         if (error)
         {
+            // standard NSURLSessionDataTask error
             dispatch_async(dispatch_get_main_queue(), ^{
                 block(nil, error);
             });
@@ -261,6 +310,7 @@ NSString * const LMOHTTPErrorDomain = @"com.labsmobile.error.http";
             NSInteger statusCode = ((NSHTTPURLResponse *)response).statusCode;
             if (statusCode >= 200 && statusCode <= 299)
             {
+                // success
                 id decodedResponse;
                 if (xmlResponse)
                 {
@@ -277,6 +327,7 @@ NSString * const LMOHTTPErrorDomain = @"com.labsmobile.error.http";
             }
             else
             {
+                // HTTP error
                 NSError *statusError = [NSError errorWithDomain:LMOHTTPErrorDomain code:statusCode userInfo:@{NSLocalizedDescriptionKey: [NSHTTPURLResponse localizedStringForStatusCode:statusCode]}];
                 dispatch_async(dispatch_get_main_queue(), ^{
                     block(nil, statusError);
@@ -287,6 +338,9 @@ NSString * const LMOHTTPErrorDomain = @"com.labsmobile.error.http";
     [task resume];
 }
 
+/**
+ Encode as URL query parameters.
+ */
 - (NSString *)stringWithParameters:(NSDictionary *)parameters
 {
     NSMutableArray *couples = [NSMutableArray array];

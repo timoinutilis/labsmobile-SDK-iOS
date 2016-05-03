@@ -21,4 +21,9 @@
     return self;
 }
 
+- (BOOL)success
+{
+    return (self.code == 0);
+}
+
 @end

@@ -95,6 +95,7 @@ typedef NS_ENUM(NSInteger, CellTag) {
                             break;
                         case LMOCodeStatusValid:
                             [self showAlertWithTitle:@"Phone Number Validated"];
+                            // back to first state to try again
                             self.state = StateNotChecked;
                             break;
                     }
@@ -171,6 +172,7 @@ typedef NS_ENUM(NSInteger, CellTag) {
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+    // show or hide "Code" section
     return (self.state == StatePending) ? 3 : 2;
 }
 
@@ -181,6 +183,7 @@ typedef NS_ENUM(NSInteger, CellTag) {
         case 0:
             return 1;
         case 1:
+            // one or two available actions
             return (self.state == StatePending) ? 2 : 1;
         case 2:
             return 1;

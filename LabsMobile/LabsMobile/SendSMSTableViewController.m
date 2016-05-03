@@ -53,6 +53,7 @@
     }
     else if (indexPath.section == 3)
     {
+        // Prepare the SMS for sending
         LMOSMSData *smsData = [[LMOSMSData alloc] init];
         smsData.recipients = @[self.phoneNumberTextField.text];
         smsData.message = self.messageTextField.text;
@@ -60,8 +61,10 @@
         smsData.ucs2 = self.optionUnicode;
         smsData.longMessage = self.optionLong;
         
+        // Get the global LabsMobile client instance
         LMOClient *labsMobileClient = ((AppDelegate *)[UIApplication sharedApplication].delegate).labsMobileClient;
         
+        // Send the SMS
         [labsMobileClient sendSMS:smsData block:^(LMOSMSResponse *response, NSError *error) {
             if (error)
             {
