@@ -7,7 +7,7 @@
 //
 
 #import "OTPTableViewController.h"
-#import <LabsMobile/LabsMobile.h>
+#import "LabsMobile.h"
 #import "AppDelegate.h"
 
 typedef NS_ENUM(NSInteger, State) {

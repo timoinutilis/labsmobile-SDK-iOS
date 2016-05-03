@@ -7,7 +7,7 @@
 //
 
 #import "SendSMSTableViewController.h"
-#import <LabsMobile/LabsMobile.h>
+#import "LabsMobile.h"
 #import "AppDelegate.h"
 
 @interface SendSMSTableViewController ()

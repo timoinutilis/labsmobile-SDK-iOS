@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <LabsMobile/LabsMobile.h>
+#import "LabsMobile.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 

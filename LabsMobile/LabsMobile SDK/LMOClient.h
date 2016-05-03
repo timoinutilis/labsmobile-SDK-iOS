@@ -7,10 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <LabsMobile/LMOSMSData.h>
-#import <LabsMobile/LMOSMSResponse.h>
-#import <LabsMobile/LMOBalanceResponse.h>
-#import <LabsMobile/LMOPricesResponse.h>
+#import "LMOSMSData.h"
+#import "LMOSMSResponse.h"
+#import "LMOBalanceResponse.h"
+#import "LMOPricesResponse.h"
 
 typedef NS_ENUM(NSInteger, LMOCodeStatus) {
     LMOCodeStatusUnknown,
