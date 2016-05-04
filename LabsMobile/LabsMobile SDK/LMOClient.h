@@ -12,9 +12,13 @@
 #import "LMOBalanceResponse.h"
 #import "LMOPricesResponse.h"
 
+/** Validation code status for a phone number. */
 typedef NS_ENUM(NSInteger, LMOCodeStatus) {
+    /** No validation code was sent to the phone number yet. */
     LMOCodeStatusUnknown,
+    /** A code was sent to the phone number, but it's not yet validated. */
     LMOCodeStatusPending,
+    /** The phone number was validated. */
     LMOCodeStatusValid
 };
 

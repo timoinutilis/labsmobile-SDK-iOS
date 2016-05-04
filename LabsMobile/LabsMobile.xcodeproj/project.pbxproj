@@ -15,7 +15,6 @@
 		927179971CD8E34D0087DEA1 /* LMOPricesResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 9271798E1CD8E34D0087DEA1 /* LMOPricesResponse.m */; };
 		927179981CD8E34D0087DEA1 /* LMOSMSData.m in Sources */ = {isa = PBXBuildFile; fileRef = 927179901CD8E34D0087DEA1 /* LMOSMSData.m */; };
 		927179991CD8E34D0087DEA1 /* LMOSMSResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 927179921CD8E34D0087DEA1 /* LMOSMSResponse.m */; };
-		9271799A1CD8E34D0087DEA1 /* XMLDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 927179941CD8E34D0087DEA1 /* XMLDictionary.m */; };
 		927179AA1CD8E4CF0087DEA1 /* BalanceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9271799E1CD8E4CF0087DEA1 /* BalanceViewController.m */; };
 		927179AB1CD8E4CF0087DEA1 /* MainTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 927179A01CD8E4CF0087DEA1 /* MainTableViewController.m */; };
 		927179AC1CD8E4CF0087DEA1 /* OTPTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 927179A21CD8E4CF0087DEA1 /* OTPTableViewController.m */; };
@@ -24,6 +23,7 @@
 		927179AF1CD8E4CF0087DEA1 /* SendSMSTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 927179A81CD8E4CF0087DEA1 /* SendSMSTableViewController.m */; };
 		927179B41CD8E5470087DEA1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 927179B21CD8E5470087DEA1 /* LaunchScreen.storyboard */; };
 		927179B51CD8E5470087DEA1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 927179B31CD8E5470087DEA1 /* Main.storyboard */; };
+		927179DC1CD909D90087DEA1 /* XMLDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 927179DB1CD909D90087DEA1 /* XMLDictionary.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,8 +44,6 @@
 		927179901CD8E34D0087DEA1 /* LMOSMSData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LMOSMSData.m; sourceTree = "<group>"; };
 		927179911CD8E34D0087DEA1 /* LMOSMSResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMOSMSResponse.h; sourceTree = "<group>"; };
 		927179921CD8E34D0087DEA1 /* LMOSMSResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LMOSMSResponse.m; sourceTree = "<group>"; };
-		927179931CD8E34D0087DEA1 /* XMLDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLDictionary.h; sourceTree = "<group>"; };
-		927179941CD8E34D0087DEA1 /* XMLDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLDictionary.m; sourceTree = "<group>"; };
 		9271799D1CD8E4CF0087DEA1 /* BalanceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BalanceViewController.h; sourceTree = "<group>"; };
 		9271799E1CD8E4CF0087DEA1 /* BalanceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BalanceViewController.m; sourceTree = "<group>"; };
 		9271799F1CD8E4CF0087DEA1 /* MainTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainTableViewController.h; sourceTree = "<group>"; };
@@ -60,6 +58,8 @@
 		927179A81CD8E4CF0087DEA1 /* SendSMSTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendSMSTableViewController.m; sourceTree = "<group>"; };
 		927179B21CD8E5470087DEA1 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		927179B31CD8E5470087DEA1 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		927179DA1CD909D90087DEA1 /* XMLDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLDictionary.h; sourceTree = "<group>"; };
+		927179DB1CD909D90087DEA1 /* XMLDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLDictionary.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,6 +127,7 @@
 		927179871CD8E34D0087DEA1 /* LabsMobile SDK */ = {
 			isa = PBXGroup;
 			children = (
+				927179D91CD909D90087DEA1 /* XMLDictionary */,
 				927179881CD8E34D0087DEA1 /* LabsMobile.h */,
 				9271798B1CD8E34D0087DEA1 /* LMOClient.h */,
 				9271798C1CD8E34D0087DEA1 /* LMOClient.m */,
@@ -138,10 +139,17 @@
 				9271798A1CD8E34D0087DEA1 /* LMOBalanceResponse.m */,
 				9271798D1CD8E34D0087DEA1 /* LMOPricesResponse.h */,
 				9271798E1CD8E34D0087DEA1 /* LMOPricesResponse.m */,
-				927179931CD8E34D0087DEA1 /* XMLDictionary.h */,
-				927179941CD8E34D0087DEA1 /* XMLDictionary.m */,
 			);
 			path = "LabsMobile SDK";
+			sourceTree = "<group>";
+		};
+		927179D91CD909D90087DEA1 /* XMLDictionary */ = {
+			isa = PBXGroup;
+			children = (
+				927179DA1CD909D90087DEA1 /* XMLDictionary.h */,
+				927179DB1CD909D90087DEA1 /* XMLDictionary.m */,
+			);
+			path = XMLDictionary;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -218,6 +226,7 @@
 				927179951CD8E34D0087DEA1 /* LMOBalanceResponse.m in Sources */,
 				927179AA1CD8E4CF0087DEA1 /* BalanceViewController.m in Sources */,
 				927179961CD8E34D0087DEA1 /* LMOClient.m in Sources */,
+				927179DC1CD909D90087DEA1 /* XMLDictionary.m in Sources */,
 				927179AE1CD8E4CF0087DEA1 /* PricesTableViewController.m in Sources */,
 				927179971CD8E34D0087DEA1 /* LMOPricesResponse.m in Sources */,
 				927179981CD8E34D0087DEA1 /* LMOSMSData.m in Sources */,
@@ -225,7 +234,6 @@
 				927179751CD8E2930087DEA1 /* AppDelegate.m in Sources */,
 				927179AF1CD8E4CF0087DEA1 /* SendSMSTableViewController.m in Sources */,
 				927179721CD8E2930087DEA1 /* main.m in Sources */,
-				9271799A1CD8E34D0087DEA1 /* XMLDictionary.m in Sources */,
 				927179AD1CD8E4CF0087DEA1 /* PricesResultsTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

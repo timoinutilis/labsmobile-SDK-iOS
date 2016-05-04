@@ -15,6 +15,8 @@
 
 /**
  Internal initializer. Objects of this class are created by LMOClient.
+ 
+ @param dictionary Dictionary with all values from the server response.
  */
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary;
 
@@ -49,6 +51,8 @@
 
 /**
  Internal initializer. Objects of this class are created by LMOClient.
+ 
+ @param dictionary Dictionary with all values from the server response.
  */
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary;
 

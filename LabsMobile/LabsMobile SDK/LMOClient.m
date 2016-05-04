@@ -340,6 +340,8 @@ NSString * const LMOHTTPErrorDomain = @"com.labsmobile.error.http";
 
 /**
  Encode as URL query parameters.
+ 
+ @param parameters Dictionary with parameters.
  */
 - (NSString *)stringWithParameters:(NSDictionary *)parameters
 {
