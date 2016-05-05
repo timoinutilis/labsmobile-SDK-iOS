@@ -38,7 +38,7 @@
 /**
  The price for sending an SMS to this country, using the LabsMobile API.
  */
-@property (readonly) double credits;
+@property (readonly) float credits;
 
 @end
 

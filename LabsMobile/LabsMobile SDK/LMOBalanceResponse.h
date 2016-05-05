@@ -23,6 +23,6 @@
 /**
  The credit of the account.
  */
-@property NSInteger messages;
+@property float messages;
 
 @end
